@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OL</title>
+<script src="https://openlayers.org/api/OpenLayers.js">
+</script>
+<style>
+#map {
+    width:1000;
+    height:1000px;
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+var Thirteen_loc = [
+{x:34.02929472604578,  y:-118.28920422227644},   
+{x:34.0253792740012,  y:-118.28514100828846}, 
+{x:34.024505115980915,  y:-118.28438818577652}, 
+{x:34.020482996298284,  y:-118.28339398072083}, 
+{x:34.02124148902352,  y:-118.28255425275812}, 
+{x:34.020299457091916, y:-118.28523824483564},  
+{x:34.022267746221104,   y:-118.28326000513549}, 
+{x:34.02233417076148,  y:-118.28414304410141}, 
+{x:34.02191390326487, y:-118.2890404473907},  
+{x:34.01947234452206, y:-118.28923681432437},  
+{x:34.021274488223405,  y:-118.28754450920427},
+{x:34.023369641306914, y:-118.28742712586285}, 
+{x:34.02536412239503,  y:-118.28595228036897} 
+];
+
+localStorage.setItem("myData",JSON.stringify(Thirteen_loc));
+
+var dataStored = JSON.parse(localStorage.getItem("myData"));
+console.log(dataStored); 
+var a = dataStored.k1; 
+for(var indx in a) { 
+  console.log(a[indx]); 
+}
+
+
+function initMap() {
+        map = new OpenLayers.Map('map');
+        basemap = new OpenLayers.Layer.OSM("Simple OSM Map");
+        map.addLayer(basemap);
+        markers = new OpenLayers.Layer.Markers("Markers");
+        map.addLayer(markers);
+}
+
+function addMarker(latitude, longitude) {
+        var lonLat = new OpenLayers.LonLat(longitude, latitude)
+            .transform(
+                new OpenLayers.Projection("EPSG:4326"), 
+                map.getProjectionObject() 
+        );
+        var point = new OpenLayers.Marker(lonLat);
+        markers.addMarker(point);
+        map.setCenter(lonLat,18); 
+        //console.log(latitude + ", " + longitude);
+}// addMarker()
+
+
+initMap();
+
+
+for(var i = 0; i < Thirteen_loc.length; i++) {
+    addMarker(Thirteen_loc[i].x,Thirteen_loc[i].y);         
+}
+
+</script>
+</body>
+</html>
